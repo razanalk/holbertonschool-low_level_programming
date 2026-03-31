@@ -1,9 +1,10 @@
 #include "main.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * is_digit - checks if string contains only digits
- * @s: string
+ * @s: input string
  * Return: 1 if true, 0 if false
  */
 int is_digit(char *s)
@@ -21,7 +22,7 @@ int is_digit(char *s)
 
 /**
  * _strlen - returns length of string
- * @s: string
+ * @s: input string
  * Return: length
  */
 int _strlen(char *s)
@@ -38,12 +39,7 @@ int _strlen(char *s)
  */
 void errors(void)
 {
-	int i;
-	char *msg = "Error\n";
-
-	for (i = 0; msg[i]; i++)
-		_putchar(msg[i]);
-
+	printf("Error\n");
 	exit(98);
 }
 
@@ -51,28 +47,24 @@ void errors(void)
  * main - multiplies two positive numbers
  * @argc: argument count
  * @argv: argument vector
- * Return: 0 on success
+ * Return: 0
  */
 int main(int argc, char *argv[])
 {
-	char *num1, *num2;
-	int len1, len2, i, j, n1, n2, carry, sum;
+	char *s1, *s2;
+	int len1, len2, i, j, carry, n1, n2;
 	int *result;
 
-	if (argc != 3)
+	if (argc != 3 || !is_digit(argv[1]) || !is_digit(argv[2]))
 		errors();
 
-	num1 = argv[1];
-	num2 = argv[2];
-
-	if (!is_digit(num1) || !is_digit(num2))
-		errors();
-
-	len1 = _strlen(num1);
-	len2 = _strlen(num2);
+	s1 = argv[1];
+	s2 = argv[2];
+	len1 = _strlen(s1);
+	len2 = _strlen(s2);
 
 	result = malloc(sizeof(int) * (len1 + len2));
-	if (!result)
+	if (result == NULL)
 		return (1);
 
 	for (i = 0; i < len1 + len2; i++)
@@ -80,15 +72,15 @@ int main(int argc, char *argv[])
 
 	for (i = len1 - 1; i >= 0; i--)
 	{
-		n1 = num1[i] - '0';
+		n1 = s1[i] - '0';
 		carry = 0;
 
 		for (j = len2 - 1; j >= 0; j--)
 		{
-			n2 = num2[j] - '0';
-			sum = result[i + j + 1] + (n1 * n2) + carry;
-			carry = sum / 10;
-			result[i + j + 1] = sum % 10;
+			n2 = s2[j] - '0';
+			carry += result[i + j + 1] + (n1 * n2);
+			result[i + j + 1] = carry % 10;
+			carry /= 10;
 		}
 		result[i + j + 1] += carry;
 	}
@@ -98,9 +90,7 @@ int main(int argc, char *argv[])
 		i++;
 
 	if (i == len1 + len2)
-	{
 		_putchar('0');
-	}
 	else
 	{
 		for (; i < len1 + len2; i++)
