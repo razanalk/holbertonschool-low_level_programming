@@ -1,10 +1,10 @@
-#include <stdio.h>
+#include "main.h"
 #include <stdlib.h>
 
 /**
- * is_digit - check if string is a number
+ * is_digit - checks if string contains only digits
  * @s: string
- * Return: 1 if digit, 0 otherwise
+ * Return: 1 if true, 0 if false
  */
 int is_digit(char *s)
 {
@@ -20,7 +20,7 @@ int is_digit(char *s)
 }
 
 /**
- * _strlen - get length of string
+ * _strlen - returns length of string
  * @s: string
  * Return: length
  */
@@ -38,15 +38,20 @@ int _strlen(char *s)
  */
 void errors(void)
 {
-	printf("Error\n");
+	int i;
+	char *msg = "Error\n";
+
+	for (i = 0; msg[i]; i++)
+		_putchar(msg[i]);
+
 	exit(98);
 }
 
 /**
- * main - multiplies two numbers
+ * main - multiplies two positive numbers
  * @argc: argument count
- * @argv: arguments
- * Return: 0
+ * @argv: argument vector
+ * Return: 0 on success
  */
 int main(int argc, char *argv[])
 {
@@ -93,15 +98,18 @@ int main(int argc, char *argv[])
 		i++;
 
 	if (i == len1 + len2)
-		printf("0");
+	{
+		_putchar('0');
+	}
 	else
 	{
 		for (; i < len1 + len2; i++)
-			printf("%d", result[i]);
+			_putchar(result[i] + '0');
 	}
 
-	printf("\n");
-	free(result);   /* 🔥 أهم سطر */
+	_putchar('\n');
+
+	free(result);
 
 	return (0);
 }
