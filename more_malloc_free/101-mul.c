@@ -2,7 +2,9 @@
 #include <stdlib.h>
 
 /**
- * is_digit - checks if string is digits
+ * is_digit - check if string is a number
+ * @s: string
+ * Return: 1 if digit, 0 otherwise
  */
 int is_digit(char *s)
 {
@@ -18,7 +20,9 @@ int is_digit(char *s)
 }
 
 /**
- * _strlen - length of string
+ * _strlen - get length of string
+ * @s: string
+ * Return: length
  */
 int _strlen(char *s)
 {
@@ -30,7 +34,7 @@ int _strlen(char *s)
 }
 
 /**
- * errors - prints error and exit
+ * errors - prints error and exits
  */
 void errors(void)
 {
@@ -39,12 +43,16 @@ void errors(void)
 }
 
 /**
- * main - multiply big numbers
+ * main - multiplies two numbers
+ * @argc: argument count
+ * @argv: arguments
+ * Return: 0
  */
 int main(int argc, char *argv[])
 {
 	char *num1, *num2;
-	int len1, len2, i, j, carry, n1, n2, *result, sum;
+	int len1, len2, i, j, n1, n2, carry, sum;
+	int *result;
 
 	if (argc != 3)
 		errors();
@@ -59,7 +67,7 @@ int main(int argc, char *argv[])
 	len2 = _strlen(num2);
 
 	result = malloc(sizeof(int) * (len1 + len2));
-	if (result == NULL)
+	if (!result)
 		return (1);
 
 	for (i = 0; i < len1 + len2; i++)
@@ -91,8 +99,9 @@ int main(int argc, char *argv[])
 		for (; i < len1 + len2; i++)
 			printf("%d", result[i]);
 	}
-	printf("\n");
 
-	free(result);
+	printf("\n");
+	free(result);   /* 🔥 أهم سطر */
+
 	return (0);
 }
