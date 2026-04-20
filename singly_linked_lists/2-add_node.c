@@ -1,13 +1,26 @@
 #include <stdlib.h>
-#include <string.h>
 #include "lists.h"
 
 /**
- * add_node - adds a new node at the beginning
+ * _strlen - calculates length of a string
+ * @s: input string
+ * Return: length
+ */
+unsigned int _strlen(const char *s)
+{
+	unsigned int len = 0;
+
+	while (s && s[len] != '\0')
+		len++;
+
+	return (len);
+}
+
+/**
+ * add_node - adds a new node at the beginning of a list
  * @head: pointer to head
- * @str: string
- *
- * Return: address of new element, or NULL
+ * @str: string to add
+ * Return: address of new element, or NULL if failed
  */
 list_t *add_node(list_t **head, const char *str)
 {
@@ -24,7 +37,7 @@ list_t *add_node(list_t **head, const char *str)
 		return (NULL);
 	}
 
-	new->len = strlen(str);
+	new->len = _strlen(str);
 	new->next = *head;
 	*head = new;
 
