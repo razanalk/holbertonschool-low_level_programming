@@ -17,10 +17,7 @@ int main(int argc, char *argv[])
 	char buffer[1024];
 
 	if (argc != 3)
-	{
-		dprintf(1, "Usage: cp file_from file_to\n");
 		_exit(97);
-	}
 
 	fd_from = open(argv[1], O_RDONLY);
 	if (fd_from == -1)
