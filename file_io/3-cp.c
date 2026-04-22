@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 	if (argc != 3)
 	{
 		dprintf(2, "Usage: cp file_from file_to\n");
+		fflush(NULL);
 		exit(97);
 	}
 
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
 	if (fd_from == -1)
 	{
 		dprintf(2, "Error: Can't read from file %s\n", argv[1]);
+		fflush(NULL);
 		exit(98);
 	}
 
@@ -34,6 +36,7 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 	{
 		dprintf(2, "Error: Can't write to %s\n", argv[2]);
+		fflush(NULL);
 		close(fd_from);
 		exit(99);
 	}
@@ -44,6 +47,7 @@ int main(int argc, char *argv[])
 		if (w != r)
 		{
 			dprintf(2, "Error: Can't write to %s\n", argv[2]);
+			fflush(NULL);
 			close(fd_from);
 			close(fd_to);
 			exit(99);
@@ -53,6 +57,7 @@ int main(int argc, char *argv[])
 	if (r == -1)
 	{
 		dprintf(2, "Error: Can't read from file %s\n", argv[1]);
+		fflush(NULL);
 		close(fd_from);
 		close(fd_to);
 		exit(98);
@@ -61,12 +66,14 @@ int main(int argc, char *argv[])
 	if (close(fd_from) == -1)
 	{
 		dprintf(2, "Error: Can't close fd %d\n", fd_from);
+		fflush(NULL);
 		exit(100);
 	}
 
 	if (close(fd_to) == -1)
 	{
 		dprintf(2, "Error: Can't close fd %d\n", fd_to);
+		fflush(NULL);
 		exit(100);
 	}
 
