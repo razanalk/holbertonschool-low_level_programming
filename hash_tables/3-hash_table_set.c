@@ -2,6 +2,57 @@
 #include <string.h>
 
 /**
+ * update_value - updates existing key
+ * @node: node
+ * @value: new value
+ *
+ * Return: 1 if success, 0 if fail
+ */
+int update_value(hash_node_t *node, const char *value)
+{
+	char *val_dup;
+
+	val_dup = strdup(value);
+	if (val_dup == NULL)
+		return (0);
+
+	free(node->value);
+	node->value = val_dup;
+
+	return (1);
+}
+
+/**
+ * create_node - creates new node
+ * @key: key
+ * @value: value
+ *
+ * Return: pointer or NULL
+ */
+hash_node_t *create_node(const char *key, const char *value)
+{
+	hash_node_t *node;
+
+	node = malloc(sizeof(hash_node_t));
+	if (node == NULL)
+		return (NULL);
+
+	node->key = strdup(key);
+	node->value = strdup(value);
+
+	if (node->key == NULL || node->value == NULL)
+	{
+		free(node->key);
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
+
+	node->next = NULL;
+	return (node);
+}
+
+/**
  * hash_table_set - adds element to hash table
  * @ht: hash table
  * @key: key
@@ -11,55 +62,28 @@
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	hash_node_t *node, *tmp;
+	hash_node_t *tmp, *new_node;
 	unsigned long int index;
-	char *val_dup, *key_dup;
 
 	if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
 		return (0);
 
 	index = key_index((const unsigned char *)key, ht->size);
-
 	tmp = ht->array[index];
 
-	/* check if key exists */
 	while (tmp)
 	{
 		if (strcmp(tmp->key, key) == 0)
-		{
-			val_dup = strdup(value);
-			if (val_dup == NULL)
-				return (0);
-
-			free(tmp->value);
-			tmp->value = val_dup;
-			return (1);
-		}
+			return (update_value(tmp, value));
 		tmp = tmp->next;
 	}
 
-	/* create new node */
-	node = malloc(sizeof(hash_node_t));
-	if (node == NULL)
+	new_node = create_node(key, value);
+	if (new_node == NULL)
 		return (0);
 
-	key_dup = strdup(key);
-	val_dup = strdup(value);
-
-	if (key_dup == NULL || val_dup == NULL)
-	{
-		free(node);
-		free(key_dup);
-		free(val_dup);
-		return (0);
-	}
-
-	node->key = key_dup;
-	node->value = val_dup;
-
-	/* insert at beginning */
-	node->next = ht->array[index];
-	ht->array[index] = node;
+	new_node->next = ht->array[index];
+	ht->array[index] = new_node;
 
 	return (1);
 }
